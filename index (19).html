@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heaven on Earth Quest - Evolution of Souls</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#000;--gold:#c8973a;--gold-light:#e8c060;--gold-pale:#f5e0a0;--white:#fff8ee;--soft:#f0e6cc;--muted:#c8a96e}
+body{background:#000;color:#f0e6cc;font-family:'Cormorant Garamond',Georgia,serif;min-height:100vh;overflow-x:hidden}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;border-radius:50%;animation:tw var(--d,3s) ease-in-out infinite var(--dl,0s)}
+@keyframes tw{0%,100%{opacity:var(--mn,.2)}50%{opacity:var(--mx,.8)}}
+.page{position:relative;z-index:1;min-height:100vh}
+.eyebrow{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#c8973a;opacity:.8;margin-bottom:14px}
+.divider{width:60px;height:1px;background:#c8973a;opacity:.3;margin:32px auto}
+.btn-gold{display:inline-block;padding:16px 36px;border-radius:12px;border:1px solid #c8973a;background:rgba(200,151,58,.12);color:#e8c060;font-family:'Cinzel Decorative',serif;font-size:14px;cursor:pointer;transition:all .3s;letter-spacing:1px;text-align:center;width:100%;max-width:380px}
+.btn-gold:hover{background:rgba(200,151,58,.25);box-shadow:0 0 30px rgba(200,151,58,.2)}
+.btn-ghost{display:inline-block;padding:10px 24px;border-radius:8px;border:1px solid rgba(200,151,58,.25);background:transparent;color:#c8a96e;font-family:'Raleway',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;margin-top:10px;width:100%;max-width:380px}
+.btn-ghost:hover{border-color:#c8973a;color:#e8c060}
+.auth-card{background:rgba(5,5,0,.9);border:1px solid rgba(200,151,58,.25);border-radius:24px;padding:40px 36px;width:100%;max-width:440px;text-align:center}
+.auth-orb{font-size:48px;margin-bottom:20px}
+.auth-title{font-family:'Cinzel Decorative',serif;font-size:22px;color:#e8c060;margin-bottom:8px}
+.auth-sub{font-size:16px;color:#c8a96e;font-style:italic;margin-bottom:28px;opacity:.85}
+.field{margin-bottom:18px;text-align:left}
+.field label{display:block;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8973a;opacity:.7;margin-bottom:8px}
+.field input{width:100%;padding:14px 16px;background:rgba(0,0,0,.7);border:1px solid rgba(200,151,58,.25);border-radius:10px;color:#fff8ee;font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;outline:none;transition:border-color .3s}
+.field input:focus{border-color:#c8973a}
+.field input::placeholder{color:rgba(200,151,58,.3);font-style:italic}
+.err-msg{font-family:'Raleway',sans-serif;font-size:13px;color:#e05555;margin-top:8px;display:none}
+.auth-switch{font-family:'Raleway',sans-serif;font-size:13px;color:#c8a96e;margin-top:16px;opacity:.7;cursor:pointer;display:block}
+.auth-switch:hover{opacity:1;color:#e8c060}
+.auth-back{font-family:'Raleway',sans-serif;font-size:13px;color:#c8a96e;margin-top:14px;cursor:pointer;opacity:.6;display:block}
+.auth-back:hover{opacity:1}
+.dash-header{padding:18px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,151,58,.15);background:rgba(0,0,0,.9);position:sticky;top:0;z-index:10}
+.dash-logo{font-family:'Cinzel Decorative',serif;font-size:14px;color:#c8973a}
+.dash-user{font-family:'Raleway',sans-serif;font-size:13px;color:#c8a96e}
+.dash-signout{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c8a96e;border:1px solid rgba(200,151,58,.25);padding:6px 14px;border-radius:20px;cursor:pointer;background:none;opacity:.6}
+.dash-signout:hover{opacity:1}
+.dash-hero{text-align:center;padding:48px 24px 32px}
+.dash-title{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,4vw,34px);background:linear-gradient(135deg,#e8c060,#c8973a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.dash-greeting{font-size:18px;color:#c8a96e;font-style:italic}
+.progress-wrap{max-width:640px;margin:0 auto 48px;padding:0 24px}
+.progress-card{background:rgba(10,8,0,.7);border:1px solid rgba(200,151,58,.2);border-radius:16px;padding:22px 28px}
+.progress-header{display:flex;justify-content:space-between;font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8973a;opacity:.8;margin-bottom:12px}
+.progress-bar{background:rgba(0,0,0,.6);border-radius:100px;height:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#c8973a,#e8c060);transition:width .8s ease}
+.realms-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:960px;margin:0 auto;padding:0 24px}
+.realm-card{background:rgba(8,6,0,.8);border:1px solid rgba(200,151,58,.15);border-radius:20px;padding:26px 22px;cursor:pointer;transition:all .35s}
+.realm-card:hover{border-color:rgba(200,151,58,.45);transform:translateY(-3px);box-shadow:0 16px 48px rgba(200,151,58,.1)}
+.rc-icon{font-size:36px;margin-bottom:10px;display:block}
+.rc-num{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#c8973a;opacity:.6;margin-bottom:4px}
+.rc-title{font-family:'Cinzel Decorative',serif;font-size:15px;color:#e8c060;margin-bottom:8px}
+.rc-goal{font-size:15px;color:#f0e6cc;font-style:italic;line-height:1.6;margin-bottom:18px;opacity:.85}
+.rc-progress{display:flex;align-items:center;gap:10px}
+.rc-track{flex:1;height:4px;background:rgba(0,0,0,.6);border-radius:100px;overflow:hidden}
+.rc-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#c8973a,#e8c060)}
+.rc-label{font-family:'Raleway',sans-serif;font-size:11px;color:#c8973a;opacity:.7;white-space:nowrap}
+.realm-back{font-family:'Raleway',sans-serif;font-size:13px;color:#c8a96e;cursor:pointer;opacity:.7;padding:6px 14px;border:1px solid rgba(200,151,58,.2);border-radius:20px;background:none}
+.realm-back:hover{opacity:1}
+.realm-header{padding:18px 28px;display:flex;align-items:center;gap:16px;border-bottom:1px solid rgba(200,151,58,.15);background:rgba(0,0,0,.9);position:sticky;top:0;z-index:10;flex-wrap:wrap}
+.realm-header-title{font-family:'Cinzel Decorative',serif;font-size:16px;color:#e8c060;flex:1}
+.realm-header-progress{font-family:'Raleway',sans-serif;font-size:12px;color:#c8973a;opacity:.7;letter-spacing:2px}
+.realm-intro{text-align:center;padding:40px 24px 32px;max-width:640px;margin:0 auto}
+.realm-intro-icon{font-size:56px;margin-bottom:16px}
+.realm-intro-title{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,3.5vw,30px);color:#e8c060;margin-bottom:12px}
+.realm-intro-goal{font-size:17px;color:#c8a96e;font-style:italic;opacity:.9}
+.task-list{max-width:760px;margin:0 auto;padding:0 24px 80px;display:flex;flex-direction:column;gap:12px}
+.task-card{background:rgba(8,6,0,.8);border:1px solid rgba(200,151,58,.15);border-radius:16px;overflow:hidden;transition:border-color .3s}
+.task-card.done{border-color:rgba(200,151,58,.4)}
+.task-head{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer}
+.task-num{width:32px;height:32px;border-radius:50%;border:1px solid rgba(200,151,58,.3);display:flex;align-items:center;justify-content:center;font-family:'Raleway',sans-serif;font-size:12px;color:#c8973a;flex-shrink:0}
+.task-info{flex:1}
+.task-title{font-family:'Cinzel Decorative',serif;font-size:15px;color:#e8c060;margin-bottom:3px}
+.task-sub{font-size:14px;color:#c8a96e;font-style:italic;opacity:.8}
+.task-check{font-size:18px;color:#c8973a;opacity:.5}
+.task-card.done .task-check{opacity:1}
+.task-body{display:none;padding:0 20px 20px}
+.task-body.open{display:block}
+.task-section{margin-bottom:18px}
+.task-section-label{font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8973a;opacity:.7;margin-bottom:8px}
+.task-section-text{font-size:16px;color:#fff8ee;line-height:1.75;opacity:.9}
+.task-textarea{width:100%;min-height:90px;background:rgba(0,0,0,.7);border:1px solid rgba(200,151,58,.2);border-radius:10px;color:#fff8ee;font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;padding:12px 14px;outline:none;resize:vertical;line-height:1.6;margin-top:8px;transition:border-color .3s}
+.task-textarea:focus{border-color:#c8973a}
+.task-textarea::placeholder{color:rgba(200,151,58,.3);font-style:italic}
+.task-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn-save{padding:10px 20px;border-radius:8px;border:1px solid rgba(200,151,58,.3);background:transparent;color:#c8973a;font-family:'Raleway',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+.btn-save:hover{border-color:#c8973a;background:rgba(200,151,58,.1)}
+.btn-complete{padding:10px 20px;border-radius:8px;border:1px solid #c8973a;background:rgba(200,151,58,.15);color:#e8c060;font-family:'Raleway',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+.btn-complete:hover{background:rgba(200,151,58,.3)}
+
+.ob-step{display:none;flex-direction:column;align-items:center;text-align:center;max-width:560px;margin:0 auto;animation:fadeUp .6s ease}
+.ob-step.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.ob-orb{font-size:52px;color:#e8c060;margin-bottom:24px}
+.ob-title{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,4vw,30px);color:#e8c060;margin-bottom:16px;line-height:1.3}
+.ob-body{font-size:clamp(16px,2.2vw,20px);color:#fff8ee;line-height:1.9;font-style:italic;margin-bottom:28px;opacity:.9}
+.ob-textarea{width:100%;min-height:120px;background:rgba(0,0,0,.7);border:1px solid rgba(200,151,58,.25);border-radius:12px;color:#fff8ee;font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;padding:14px 16px;outline:none;resize:vertical;line-height:1.7;margin-bottom:24px;transition:border-color .3s}
+.ob-textarea:focus{border-color:#c8973a}
+.ob-textarea::placeholder{color:rgba(200,151,58,.3);font-style:italic}
+.ob-realms{display:flex;flex-direction:column;gap:10px;width:100%;margin-bottom:12px;text-align:left}
+.ob-realm{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:14px;border:1px solid rgba(200,151,58,.15);background:rgba(8,6,0,.6);cursor:pointer;transition:all .3s}
+.ob-realm:hover{border-color:rgba(200,151,58,.45);background:rgba(200,151,58,.07)}
+.ob-realm-icon{font-size:26px;flex-shrink:0}
+.ob-realm-title{font-family:'Cinzel Decorative',serif;font-size:13px;color:#e8c060;margin-bottom:3px}
+.ob-realm-desc{font-size:14px;color:#f0e6cc;opacity:.7;font-style:italic}
+.ob-sel-icon{font-size:68px;margin-bottom:16px}
+.ob-affirmation{border-left:2px solid #c8973a;border-right:2px solid #c8973a;padding:16px 24px;font-size:clamp(15px,2vw,18px);color:#f5e0a0;font-style:italic;line-height:1.8;margin:8px 0 28px}
+.breath-circle{width:160px;height:160px;border-radius:50%;border:1px solid rgba(200,151,58,.25);display:flex;align-items:center;justify-content:center;position:relative;margin:12px auto}
+.breath-ring{position:absolute;inset:0;border-radius:50%;border:2px solid #c8973a;animation:breathe 8s ease-in-out infinite;box-shadow:0 0 20px rgba(200,151,58,.2)}
+@keyframes breathe{0%,100%{transform:scale(.7);opacity:.3}45%,55%{transform:scale(1.15);opacity:.8}}
+.breath-text{font-family:'Raleway',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#e8c060;z-index:1;opacity:.85}
+.ob-hint{font-family:'Raleway',sans-serif;font-size:12px;color:#c8973a;opacity:.5;margin-top:12px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:1000;display:none;align-items:center;justify-content:center;padding:40px 24px}
+.overlay.show{display:flex}
+.overlay-inner{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:480px;animation:fadeUp .5s ease}
+.overlay-icon{font-size:60px;margin-bottom:20px}
+.overlay-title{font-family:'Cinzel Decorative',serif;font-size:clamp(20px,4vw,28px);color:#e8c060;margin-bottom:14px}
+.overlay-msg{font-size:clamp(16px,2.2vw,19px);color:#fff8ee;line-height:1.85;font-style:italic;opacity:.9;margin-bottom:28px}
+.overlay-note{font-size:16px;color:#c8a96e;font-style:italic;line-height:1.7;padding:16px 20px;border-left:2px solid #c8973a;border-right:2px solid #c8973a;margin-bottom:28px;opacity:.85}
+.music-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;background:rgba(0,0,0,.92);border:1px solid rgba(200,151,58,.35);border-radius:50px;padding:10px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 0 30px rgba(200,151,58,.1);max-width:92vw}
+.music-bar.open{border-radius:18px;flex-wrap:wrap}
+.music-play{width:34px;height:34px;border-radius:50%;border:1px solid #c8973a;background:rgba(200,151,58,.12);color:#e8c060;font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.music-play:hover{background:rgba(200,151,58,.28)}
+.music-title{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#e8c060;white-space:nowrap;min-width:80px}
+.music-wave{display:flex;gap:2px;align-items:center;height:14px}
+.music-wave span{display:block;width:2px;border-radius:2px;background:#c8973a;opacity:.6;animation:mw 1.3s ease-in-out infinite}
+.music-wave span:nth-child(1){height:4px;animation-delay:0s}.music-wave span:nth-child(2){height:10px;animation-delay:.18s}.music-wave span:nth-child(3){height:6px;animation-delay:.36s}.music-wave span:nth-child(4){height:12px;animation-delay:.09s}.music-wave span:nth-child(5){height:5px;animation-delay:.27s}
+.music-wave.paused span{animation-play-state:paused;opacity:.2}
+@keyframes mw{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.25)}}
+.music-menu{font-size:15px;color:#c8973a;opacity:.5;cursor:pointer;padding:2px 6px;flex-shrink:0}
+.music-menu:hover{opacity:1}
+.music-tracks{display:none;width:100%;flex-direction:column;gap:0;padding-top:10px;border-top:1px solid rgba(200,151,58,.15);margin-top:4px}
+.music-bar.open .music-tracks{display:flex}
+.music-track{font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c8973a;opacity:.55;cursor:pointer;padding:7px 4px;transition:all .2s;border-radius:6px}
+.music-track:hover{opacity:1;background:rgba(200,151,58,.08)}
+.music-track.on{opacity:1;color:#e8c060}
+.toast{position:fixed;bottom:80px;right:24px;background:rgba(0,0,0,.9);border:1px solid rgba(200,151,58,.3);border-radius:12px;padding:12px 20px;font-family:'Raleway',sans-serif;font-size:13px;color:#e8c060;z-index:9999;opacity:0;transform:translateY(20px);transition:all .4s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+#yt-wrap{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+.price-box{border:1px solid rgba(200,151,58,.3);border-radius:20px;padding:32px;background:rgba(10,8,0,.6);margin-bottom:24px}
+.price-num{font-family:'Cinzel Decorative',serif;font-size:clamp(36px,6vw,56px);color:#e8c060;margin-bottom:4px}
+.pay-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;text-align:left}
+.pay-label{font-family:'Raleway',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#c8973a;opacity:.7;width:80px;flex-shrink:0}
+.pay-val{font-size:16px;color:#fff8ee;cursor:pointer;border:1px solid rgba(200,151,58,.25);padding:10px 16px;border-radius:8px;flex:1;transition:all .2s}
+.pay-val:hover{border-color:#c8973a;color:#e8c060}
+.showcase-upload select option{background:#0a0800;color:#c8973a;}
+.showcase-upload select:focus{border-color:#c8973a;}
+.showcase-upload textarea{width:100%;min-height:110px;background:rgba(0,0,0,.7);border:1px solid rgba(200,151,58,.2);border-radius:14px;color:#fff8ee;font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;padding:16px;outline:none;resize:vertical;line-height:1.7;transition:border-color .3s}
+.showcase-upload textarea:focus{border-color:#c8973a}
+.showcase-upload textarea::placeholder{color:rgba(200,151,58,.3);font-style:italic}
+.sub-card{background:rgba(8,6,0,.8);border:1px solid rgba(200,151,58,.15);border-radius:16px;padding:22px;margin-bottom:14px}
+.sub-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.sub-avatar{width:36px;height:36px;border-radius:50%;background:rgba(200,151,58,.2);border:1px solid #c8973a;display:flex;align-items:center;justify-content:center;font-family:'Cinzel Decorative',serif;font-size:14px;color:#e8c060;flex-shrink:0}
+.sub-name{font-family:'Cinzel Decorative',serif;font-size:13px;color:#e8c060}
+.sub-date{font-family:'Raleway',sans-serif;font-size:11px;color:#c8a96e;opacity:.6}
+.sub-text{font-size:16px;color:#f0e6cc;line-height:1.7;opacity:.9}
+@media(max-width:600px){.auth-card{padding:28px 20px}.task-actions{flex-direction:column}.btn-save,.btn-complete{width:100%;text-align:center}}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+
+<!-- LANDING -->
+<div id="pg-landing" class="page" style="display:block;padding-bottom:80px;">
+  <div style="text-align:center;padding:80px 24px 40px;">
+    <div class="eyebrow">✦ Evolution of Souls ✦</div>
+    <h1 style="font-family:'Cinzel Decorative',serif;font-size:clamp(26px,5vw,52px);background:linear-gradient(135deg,#e8c060,#c8973a,#f5e0a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;margin-bottom:24px;">Heaven on Earth Quest</h1>
+    <p style="font-size:clamp(16px,2.2vw,20px);color:#fff8ee;line-height:1.9;font-style:italic;max-width:580px;margin:0 auto 40px;">No leaders to follow or content to consume. A creation system meant to support you.</p>
+    <p style="font-size:clamp(16px,2vw,19px);color:#fff8ee;line-height:1.9;text-align:center;max-width:600px;margin:0 auto 40px;opacity:.9;">This is not a course. It is a sacred journey to design and build your own slice of heaven on earth. Through 6 realms, actionable steps, and tangible creations, your greatest desires will begin to shape form in real time.</p>
+    <button class="btn-gold" onclick="goPW()">Begin Your Quest ✦</button>
+  </div>
+  <div class="divider"></div>
+  <div style="max-width:680px;margin:0 auto 60px;padding:0 24px;">
+    <h3 style="font-family:'Cinzel Decorative',serif;font-size:16px;color:#e8c060;text-align:center;margin-bottom:32px;">Six Realms. One Sacred Creation System.</h3>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:28px;"><div style="font-size:28px;flex-shrink:0;margin-top:4px;">🔥</div><div><div style="font-family:'Cinzel Decorative',serif;font-size:13px;color:#e8c060;margin-bottom:6px;">Work &amp; Purpose</div><div style="font-size:16px;color:#f0e6cc;line-height:1.75;font-style:italic;opacity:.9;">Clarify your most aligned projects, prototype your top idea, and map who belongs beside you.</div></div></div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:28px;"><div style="font-size:28px;flex-shrink:0;margin-top:4px;">💞</div><div><div style="font-family:'Cinzel Decorative',serif;font-size:13px;color:#e8c060;margin-bottom:6px;">Relationships</div><div style="font-size:16px;color:#f0e6cc;line-height:1.75;font-style:italic;opacity:.9;">Map the connections already in your life, deepen what matters, and invite in who is meant to be there.</div></div></div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:28px;"><div style="font-size:28px;flex-shrink:0;margin-top:4px;">🎨</div><div><div style="font-family:'Cinzel Decorative',serif;font-size:13px;color:#e8c060;margin-bottom:6px;">Creativity</div><div style="font-size:16px;color:#f0e6cc;line-height:1.75;font-style:italic;opacity:.9;">Choose your mediums, let the ideas flow, and birth your first real creation.</div></div></div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:28px;"><div style="font-size:28px;flex-shrink:0;margin-top:4px;">🌍</div><div><div style="font-family:'Cinzel Decorative',serif;font-size:13px;color:#e8c060;margin-bottom:6px;">Community</div><div style="font-size:16px;color:#f0e6cc;line-height:1.75;font-style:italic;opacity:.9;">Find where you belong, birth a contribution that matters, and witness how your light ripples outward.</div></div></div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:28px;"><div style="font-size:28px;flex-shrink:0;margin-top:4px;">⚡</div><div><div style="font-family:'Cinzel Decorative',serif;font-size:13px;color:#e8c060;margin-bottom:6px;">Self Mastery</div><div style="font-size:16px;color:#f0e6cc;line-height:1.75;font-style:italic;opacity:.9;">Face what has been holding you back, choose how you want to grow, and start tracking your wins.</div></div></div>
+    <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:28px;"><div style="font-size:28px;flex-shrink:0;margin-top:4px;">💎</div><div><div style="font-family:'Cinzel Decorative',serif;font-size:13px;color:#e8c060;margin-bottom:6px;">Abundance</div><div style="font-size:16px;color:#f0e6cc;line-height:1.75;font-style:italic;opacity:.9;">Take honest stock of what you have, close the gaps, and shift how you see wealth and possibility.</div></div></div>
+  </div>
+  <div class="divider"></div>
+  <div style="max-width:640px;margin:0 auto 60px;padding:0 24px;text-align:center;">
+    <div class="eyebrow">✦ A Message From My Soul To Yours ✦</div>
+    <h2 style="font-family:'Cinzel Decorative',serif;font-size:clamp(18px,3vw,26px);color:#e8c060;margin-bottom:20px;line-height:1.4;">Heaven Is Not Just A Place We Go When We Die</h2>
+    <p style="font-size:clamp(16px,2vw,19px);color:#fff8ee;line-height:1.9;font-style:italic;margin-bottom:28px;opacity:.9;">It is a state of being we can experience here, now. In this life, there are specific areas, when even slightly realigned, where joy and love naturally begin to expand. This quest exists to help you find the leakages, repair the breaches, and create your own slice of Heaven, here, now.</p>
+
+    <div style="width:60px;height:1px;background:#c8973a;opacity:.3;margin:32px auto;"></div>
+
+    <div class="eyebrow">🌊 New Earth Is Here</div>
+    <p style="font-size:clamp(16px,2vw,19px);color:#fff8ee;line-height:1.9;font-style:italic;margin-bottom:28px;opacity:.9;">The more souls awaken and begin questioning their part in all of this, the more New Earth expands into the physical. And here is the key. It expands through creation, not consumption. This is your invitation to be part of that expansion.</p>
+
+    <div style="width:60px;height:1px;background:#c8973a;opacity:.3;margin:32px auto;"></div>
+
+    <div class="eyebrow">✨ Why Are We Here?</div>
+    <p style="font-size:clamp(16px,2vw,19px);color:#fff8ee;line-height:1.9;font-style:italic;margin-bottom:28px;opacity:.9;">We are here to create. To express. To build something that did not exist before we arrived. Every soul that completes this quest adds a thread to the tapestry of the New Earth. Your slice of heaven is not selfish. It is your contribution to the whole.</p>
+
+    <div style="width:60px;height:1px;background:#c8973a;opacity:.3;margin:32px auto;"></div>
+
+    <div class="eyebrow">✨ No Leaders. No Courses. Just Creation.</div>
+    <p style="font-size:clamp(16px,2vw,19px);color:#fff8ee;line-height:1.9;font-style:italic;margin-bottom:28px;opacity:.9;">This is not a program to study or content to consume. The Heaven on Earth Quest is a living, breathing creation system. 6 realms, actionable steps, and tangible outputs that shape your greatest desires into form in real time.</p>
+
+    <div style="border-left:2px solid #c8973a;border-right:2px solid #c8973a;padding:16px 24px;font-size:clamp(16px,2vw,19px);color:#f5e0a0;font-style:italic;line-height:1.8;margin:0 0 32px;">"Your greatest desires will begin to shape form in real time, thus creating your own slice of Heaven on Earth. Let's create, mi amor. ✦"</div>
+    <p style="font-family:'Cinzel Decorative',serif;font-size:13px;color:#c8973a;margin-bottom:4px;">EVOLUTION OF SOULS</p>
+    <p style="font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c8a96e;opacity:.7;">New Earth. New Creation. Heaven Now.</p>
+  </div>
+  <div class="divider"></div>
+  <div style="max-width:480px;margin:0 auto;padding:0 24px;text-align:center;">
+    <div class="eyebrow">✦ Begin Your Journey ✦</div>
+    <div class="price-box">
+      <div class="price-num">$36.90</div>
+      <div style="font-family:'Raleway',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#c8973a;opacity:.7;margin-bottom:24px;">369, the foundation of creation</div>
+      <div class="eyebrow">✦ Send Payment ✦</div>
+      <div class="pay-row"><span class="pay-label">Card</span><a href="https://square.link/u/sCpK6xmt" target="_blank" class="pay-val" style="text-decoration:none;display:block;text-align:center;background:rgba(200,151,58,.12);">Pay $36.90 via Square ✦</a></div>
+      <div class="pay-row"><span class="pay-label">CashApp</span><span class="pay-val" onclick="copyTxt('$ArielEOS')">$ArielEOS</span></div>
+      <div class="pay-row"><span class="pay-label">Venmo</span><span class="pay-val" onclick="copyTxt('@evolutionofsouls')">@evolutionofsouls</span></div>
+      <p style="font-family:'Raleway',sans-serif;font-size:13px;color:#c8a96e;margin:16px 0;font-style:italic;">After payment, you'll receive your quest password via DM</p>
+    </div>
+    <button class="btn-gold" onclick="goPW()">I've Paid, Enter My Quest ✦</button>
+    <span style="display:block;margin-top:14px;font-family:'Raleway',sans-serif;font-size:13px;color:#c8a96e;cursor:pointer;text-decoration:underline;opacity:.7;" onclick="goPW()">Already have a password? Sign in here</span>
+  </div>
+</div>
+
+<!-- PASSWORD PAGE -->
+<div id="pg-pw" class="page" style="display:none;">
+  <div id="pw-step1" style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;">
+    <div class="auth-card">
+      <div class="auth-orb">🌟</div>
+      <h2 class="auth-title">Enter the Quest</h2>
+      <p class="auth-sub">Enter your quest password to begin</p>
+      <div class="field"><label>Quest Password</label><input type="password" id="pw-input" placeholder="Your secret password..." onkeydown="if(event.key==='Enter')checkPW()"></div>
+      <div class="err-msg" id="pw-err">✦ That password doesn't resonate. Try again.</div>
+      <button class="btn-gold" style="margin-top:8px;" onclick="checkPW()">Unlock My Journey ✦</button>
+      <span class="auth-back" onclick="goPg('pg-landing')">← Back</span>
+    </div>
+  </div>
+  <div id="pw-step2" style="display:none;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;">
+    <div class="auth-card">
+      <div class="auth-orb">✦</div>
+      <h2 class="auth-title">Create Your Account</h2>
+      <p class="auth-sub">This is where your journey begins</p>
+      <div class="field"><label>Your Name</label><input type="text" id="reg-name" placeholder="What shall we call you..."></div>
+      <div class="field"><label>Email</label><input type="email" id="reg-email" placeholder="Your email address..."></div>
+      <div class="field"><label>Choose a Password</label><input type="password" id="reg-pw" placeholder="Create your password..."></div>
+      <div class="err-msg" id="reg-err"></div>
+      <button class="btn-gold" style="margin-top:8px;" onclick="doRegister()">Begin My Quest ✦</button>
+      <span class="auth-switch" onclick="showLogin()">Already have an account? Sign in</span>
+    </div>
+  </div>
+  <div id="pw-step3" style="display:none;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;">
+    <div class="auth-card">
+      <div class="auth-orb">✦</div>
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-sub">Your quest awaits</p>
+      <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="Your email..." onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="field"><label>Password</label><input type="password" id="login-pw" placeholder="Your password..." onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="err-msg" id="login-err">Email or password not found.</div>
+      <button class="btn-gold" style="margin-top:8px;" onclick="doLogin()">Enter My Quest ✦</button>
+      <span class="auth-switch" onclick="showReg()">New here? Enter quest password first</span>
+    </div>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="pg-ob" class="page" style="display:none;padding:60px 24px 100px;">
+  <div class="ob-step active" id="ob1">
+    <div class="ob-orb">✦</div>
+    <h2 class="ob-title" id="ob-name">Welcome, Soul.</h2>
+    <p class="ob-body">Before we begin your journey, take a moment to arrive fully.</p>
+    <div class="breath-circle"><div class="breath-ring"></div><span class="breath-text" id="bt1">Breathe In</span></div>
+    <p class="ob-hint">Breathe in as it expands, out as it contracts.</p>
+    <button class="btn-gold" style="margin-top:32px;" onclick="obGo(2)">I am ready ✦</button>
+  </div>
+  <div class="ob-step" id="ob2">
+    <div class="eyebrow">✦ Your Intention ✦</div>
+    <h2 class="ob-title">Why are you really here?</h2>
+    <p class="ob-body">Not the surface reason. The real one.</p>
+    <textarea class="ob-textarea" id="ob-intent" placeholder="Write freely. This is just for you..."></textarea>
+    <button class="btn-gold" onclick="obGo(3)">Continue ✦</button>
+  </div>
+  <div class="ob-step" id="ob3">
+    <div class="eyebrow">✦ Choose Your Entry Point ✦</div>
+    <h2 class="ob-title">Which area of your life is calling for the most love right now?</h2>
+    <p class="ob-body" style="margin-bottom:20px;">Trust your first feeling.</p>
+    <div class="ob-realms">
+      <div class="ob-realm" onclick="obPick(0)"><span class="ob-realm-icon">🔥</span><div><div class="ob-realm-title">Work &amp; Purpose</div><div class="ob-realm-desc">Your projects, calling, and aligned creations</div></div></div>
+      <div class="ob-realm" onclick="obPick(1)"><span class="ob-realm-icon">💞</span><div><div class="ob-realm-title">Relationships</div><div class="ob-realm-desc">Your connections, bonds, and love</div></div></div>
+      <div class="ob-realm" onclick="obPick(2)"><span class="ob-realm-icon">🎨</span><div><div class="ob-realm-title">Creativity</div><div class="ob-realm-desc">Your expression, art, and making</div></div></div>
+      <div class="ob-realm" onclick="obPick(3)"><span class="ob-realm-icon">🌍</span><div><div class="ob-realm-title">Community</div><div class="ob-realm-desc">Your impact, contribution, and circle</div></div></div>
+      <div class="ob-realm" onclick="obPick(4)"><span class="ob-realm-icon">⚡</span><div><div class="ob-realm-title">Self Mastery</div><div class="ob-realm-desc">Your growth, beliefs, and inner world</div></div></div>
+      <div class="ob-realm" onclick="obPick(5)"><span class="ob-realm-icon">💎</span><div><div class="ob-realm-title">Abundance</div><div class="ob-realm-desc">Your resources, mindset, and flow</div></div></div>
+    </div>
+  </div>
+  <div class="ob-step" id="ob4">
+    <div class="ob-sel-icon" id="ob-sel-icon"></div>
+    <div class="eyebrow">✦ Your First Realm ✦</div>
+    <h2 class="ob-title" id="ob-sel-name"></h2>
+    <p class="ob-body" id="ob-sel-msg"></p>
+    <div class="ob-affirmation" id="ob-sel-aff"></div>
+    <button class="btn-gold" onclick="obEnter()">Enter This Realm ✦</button>
+    <button class="btn-ghost" onclick="goPg('pg-dash')">See All Realms First</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="pg-dash" class="page" style="display:none;padding-bottom:100px;">
+  <div class="dash-header">
+    <div class="dash-logo">✦ EOS Quest</div>
+    <div class="dash-user" id="dash-user"></div>
+    <button class="dash-signout" onclick="doLogout()">Sign Out</button>
+  </div>
+  <div class="dash-hero">
+    <h2 class="dash-title">Your Heaven on Earth Quest</h2>
+    <p class="dash-greeting" id="dash-greet">Welcome, Creator ✦</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-card">
+      <div class="progress-header"><span>Overall Progress</span><span id="pct-lbl">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="pct-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="realms-grid" id="realms-grid"></div>
+  <div style="text-align:center;margin-top:40px;">
+    <button class="btn-gold" style="max-width:300px;" onclick="goShowcase()">✦ My Soul Journal</button>
+  </div>
+</div>
+
+<!-- REALM VIEW -->
+<div id="pg-realm" class="page" style="display:none;padding-bottom:100px;">
+  <div class="realm-header">
+    <button class="realm-back" onclick="goPg('pg-dash')">← Dashboard</button>
+    <div class="realm-header-title" id="rh-title"></div>
+    <div class="realm-header-progress" id="rh-prog"></div>
+  </div>
+  <div class="realm-intro">
+    <div class="realm-intro-icon" id="ri-icon"></div>
+    <h2 class="realm-intro-title" id="ri-title"></h2>
+    <p class="realm-intro-goal" id="ri-goal"></p>
+  </div>
+  <!-- HEAVEN VISION PROMPT -->
+  <div style="max-width:760px;margin:0 auto 32px;padding:0 24px;">
+    <div style="background:rgba(200,151,58,.06);border:1px solid rgba(200,151,58,.2);border-radius:20px;padding:28px 28px 22px;">
+      <div style="font-family:'Raleway',sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#c8973a;opacity:.8;margin-bottom:10px;">✦ Cast Your Vision First ✦</div>
+      <p style="font-family:'Cinzel Decorative',serif;font-size:clamp(15px,2.5vw,18px);color:#e8c060;line-height:1.5;margin-bottom:16px;">What does this area of your life look and feel like when it is fully aligned, authentically expressed, and deeply loved on?</p>
+      <p style="font-size:15px;color:#c8a96e;font-style:italic;line-height:1.7;margin-bottom:18px;opacity:.85;">Describe your heaven here. Be specific. Be bold. Let yourself want what you actually want.</p>
+      <textarea id="vision-input" class="task-textarea" style="min-height:120px;" placeholder="My heaven in this realm looks like..."></textarea>
+      <button class="btn-save" style="margin-top:12px;" onclick="saveVision()">Save My Vision ✦</button>
+    </div>
+  </div>
+  <div class="task-list" id="task-list"></div>
+</div>
+
+<!-- SHOWCASE -->
+<div id="pg-show" class="page" style="display:none;padding-bottom:100px;">
+  <div class="realm-header">
+    <button class="realm-back" onclick="goPg('pg-dash')">← Dashboard</button>
+    <div class="realm-header-title">✦ My Soul Journal</div>
+  </div>
+  <div style="text-align:center;padding:48px 24px 32px;">
+    <h2 style="font-family:'Cinzel Decorative',serif;font-size:clamp(20px,4vw,32px);color:#e8c060;margin-bottom:12px;">My Soul Journal</h2>
+    <p style="font-size:17px;color:#c8a96e;font-style:italic;opacity:.85;">Your private space to capture reflections, breakthroughs, and creations. Only you can see this. ✦</p>
+  </div>
+  <div class="showcase-upload" style="max-width:640px;margin:0 auto 40px;padding:0 24px;">
+    <select id="show-realm" style="width:100%;padding:12px 16px;background:rgba(0,0,0,.7);border:1px solid rgba(200,151,58,.25);border-radius:10px;color:#c8973a;font-family:'Raleway',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;outline:none;margin-bottom:12px;cursor:pointer;">
+      <option value="">✦ Select a Realm (optional)</option>
+      <option value="🔥 Work / Purpose">🔥 Work / Purpose</option>
+      <option value="💞 Relationships">💞 Relationships</option>
+      <option value="🎨 Creativity">🎨 Creativity</option>
+      <option value="🌍 Community">🌍 Community</option>
+      <option value="⚡ Self Mastery">⚡ Self Mastery</option>
+      <option value="💎 Abundance">💎 Abundance</option>
+      <option value="✦ General">✦ General</option>
+    </select>
+    <textarea id="show-input" placeholder="Write a reflection, breakthrough, or creation. This is just for you..."></textarea>
+    <div style="margin-top:12px;"><button class="btn-gold" style="max-width:320px;" onclick="submitShow()">Save To My Journal ✦</button></div>
+  </div>
+  <div style="max-width:640px;margin:0 auto;padding:0 24px;" id="show-list"></div>
+</div>
+
+<!-- OVERLAYS -->
+<div class="overlay" id="ov-breath">
+  <div class="overlay-inner">
+    <div class="eyebrow">✦ Pause &amp; Breathe ✦</div>
+    <div class="breath-circle" style="margin:20px auto;"><div class="breath-ring"></div><span class="breath-text" id="bt2">Breathe In</span></div>
+    <p class="overlay-msg" id="breath-msg">Take a moment to breathe before continuing.</p>
+    <button class="btn-gold" style="max-width:240px;" onclick="closeOv('ov-breath')">Continue ✦</button>
+  </div>
+</div>
+<div class="overlay" id="ov-cel">
+  <div class="overlay-inner">
+    <div class="overlay-icon" id="cel-i">✦</div>
+    <h2 class="overlay-title" id="cel-t">Beautiful.</h2>
+    <p class="overlay-msg" id="cel-m">You just brought something real into the world.</p>
+    <button class="btn-gold" style="max-width:240px;" onclick="closeOv('ov-cel')">Keep Going ✦</button>
+  </div>
+</div>
+<div class="overlay" id="ov-done">
+  <div class="overlay-inner">
+    <div class="overlay-icon" id="done-i">🌟</div>
+    <div class="eyebrow">✦ Realm Complete ✦</div>
+    <h2 class="overlay-title" id="done-t">You Did It.</h2>
+    <p class="overlay-msg" id="done-m"></p>
+    <div class="overlay-note">Take time to rest and integrate. Meditate, go outside, drink water, sleep well.</div>
+    <button class="btn-gold" style="max-width:280px;" onclick="closeOv('ov-done');goPg('pg-dash')">Return to My Quest ✦</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div id="yt-wrap"><div id="yt0"></div><div id="yt1"></div><div id="yt2"></div><div id="yt3"></div><div id="yt4"></div></div>
+<div class="music-bar" id="mbar">
+  <div class="music-play" id="mplay" onclick="mToggle()">▶</div>
+  <div class="music-title" id="mtitle">Zen Ambience</div>
+  <div class="music-wave paused" id="mwave"><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="music-menu" onclick="mMenu()">♫</div>
+  <div class="music-tracks">
+    <div class="music-track on" id="mt0" onclick="mSel(0)">✦ Be Still & Know</div>
+    <div class="music-track" id="mt1" onclick="mSel(1)">✦ Stepping Off The Boat</div>
+    <div class="music-track" id="mt2" onclick="mSel(2)">✦ New Earth</div>
+    <div class="music-track" id="mt3" onclick="mSel(3)">✦ Affirmations</div>
+    <div class="music-track" id="mt4" onclick="mSel(4)">✦ Sound Healing</div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+var QP='NewEarthEOS';
+var REALMS=[
+  {id:0,icon:'🔥',name:'Work / Purpose',goal:'Clarify, prototype, and activate aligned projects',tasks:[
+    {t:'Project Inventory',s:'Uncover your creations',d:'List all ideas and projects you feel drawn to.',r:'Which excites you most and why?',o:'List of potential creations'},
+    {t:'Alignment Ranking',s:'Find your highest calling',d:'Rank your projects by alignment with your highest self.',r:'Which aligns best with your purpose?',o:'Top project selected'},
+    {t:'Micro-Action Step',s:'Move into motion',d:'Choose one small step to take this week.',r:'How will this step reflect your capabilities?',o:'Weekly action plan'},
+    {t:'Prototype Draft',s:'Make it tangible',d:'Sketch, outline, or concept your top project.',r:'How does this prototype reflect your heaven on earth vision?',o:'Mini blueprint'},
+    {t:'Collaboration Map',s:'Expand your reach',d:'Identify 1 to 2 people who could amplify your project.',r:'How could collaboration expand your creation?',o:'Collaboration map'},
+    {t:'Milestones & Timeline',s:'Anchor your vision in time',d:'Set measurable 7 to 14 day milestones.',r:'How will achieving this advance your vision?',o:'Milestone tracker'},
+    {t:'Impact Visualization',s:'See your future',d:'Map how your project contributes to your slice of heaven.',r:'What does success look, feel, and sound like?',o:'Visual impact map'},
+    {t:'Intentions Capture',s:'Declare your creation',d:'Journal or record your intentions for this project.',r:'How does articulating intentions affect your clarity?',o:'Documented intentions'}
+  ]},
+  {id:1,icon:'💞',name:'Relationships',goal:'Build aligned, meaningful connections',tasks:[
+    {t:'Relationship Inventory',s:'Know your circle',d:'List your top 5 to 10 connections and their influence.',r:'Which relationships fuel your growth the most?',o:'Relationship map'},
+    {t:'Connection Deepening',s:'Strengthen your bonds',d:'Choose one relationship to strengthen or repair.',r:'How does this connection support your heaven on earth?',o:'Action plan'},
+    {t:'New Connections',s:'Expand your universe',d:'Brainstorm 2 to 3 new meaningful connections to pursue.',r:'How could these new connections expand your creations?',o:'Potential collaborators list'},
+    {t:'Interaction Design',s:'Create sacred rituals',d:'Plan a micro-action or ritual to nurture key relationships.',r:'How will this ritual strengthen mutual growth?',o:'Relationship mini-plan'},
+    {t:'Boundaries Mapping',s:'Honor your energy',d:'Identify what you need more and less of in relationships.',r:'How do clear boundaries support your creations?',o:'Boundaries chart'},
+    {t:'Community Contribution',s:'Ripple outward',d:'Identify one small action to positively impact your circle.',r:'How does your action ripple out beyond yourself?',o:'Micro-community activation'},
+    {t:'Feedback Loop',s:'Learn from reflection',d:'Share one creation or idea with a trusted person and record their response.',r:'What insights did you gain from sharing?',o:'Feedback log'},
+    {t:'Integration',s:'Weave it all together',d:'Reflect on how relationships support your ongoing creations.',r:'Which connections support your creation most deeply?',o:'Integrated relationship strategy'}
+  ]},
+  {id:2,icon:'🎨',name:'Creativity',goal:'Activate tangible, joyful self-expression',tasks:[
+    {t:'Select Your Mediums',s:'Choose your instruments',d:'Pick 2 to 3 forms of expression such as writing, art, music, or movement.',r:'Which mediums feel most alive and authentic to you right now?',o:'Your chosen creative mediums'},
+    {t:'Idea Generation',s:'Let creation flow',d:'Create 5 to 10 micro-creation ideas that feel small, doable, and exciting.',r:'Which ideas feel most aligned with your current energy?',o:'List of micro-creation ideas'},
+    {t:'Prototype Creation',s:'Birth something real',d:'Draft your first tangible version of one idea.',r:'What did the process of creation reveal to you?',o:'First prototype'},
+    {t:'Experimentation',s:'Break the rules',d:'Try a new method, style, or approach you have never used before.',r:'What did this experiment teach you about your creative range?',o:'Documented experiment'},
+    {t:'Collaboration Exploration',s:'Create together',d:'Identify a co-creation opportunity with another soul.',r:'How might collaboration expand your creative expression?',o:'Co-creation opportunity identified'},
+    {t:'Iteration',s:'Refine the gem',d:'Refine your first creation based on reflection and any feedback.',r:'How has iteration deepened or evolved your creation?',o:'Refined creation'},
+    {t:'Presentation Prep',s:'Step into the light',d:'Optional. Prepare your creation for a showcase or recording.',r:'What does it feel like to share your creation with others?',o:'Showcase-ready piece'},
+    {t:'Creative Reflection',s:'Integrate the journey',d:'Summarize your insights and next creative ideas.',r:'How has this realm shifted your relationship with creativity?',o:'Creative journey summary'}
+  ]},
+  {id:3,icon:'🌍',name:'Community',goal:'Co-create impact, solutions, and collective light',tasks:[
+    {t:'Community Mapping',s:'See your ecosystem',d:'List your existing networks, communities, and circles of influence.',r:'Where do you feel most energized and aligned?',o:'Community map'},
+    {t:'Micro-Project Brainstorm',s:'Find your contribution',d:'Identify a small, meaningful project you could contribute.',r:'What impact do you most want to create?',o:'Project idea'},
+    {t:'Collaboration Planning',s:'Gather your allies',d:'Find 1 to 2 partners to implement your micro-project with.',r:'How does collaboration amplify the impact?',o:'Collaboration plan'},
+    {t:'Action Timeline',s:'Commit to the path',d:'Schedule your project steps with specific dates and actions.',r:'What does committing to this timeline reveal about your priorities?',o:'Project timeline'},
+    {t:'Impact Metrics',s:'Define success',d:'Define measurable outcomes that will signal success.',r:'How will you know your contribution made a difference?',o:'Success metrics'},
+    {t:'Feedback Loop',s:'Listen and evolve',d:'Gather input and responses from peers and community members.',r:'What did you learn from listening?',o:'Feedback collected'},
+    {t:'Documentation',s:'Capture the journey',d:'Record your progress through notes, photos, or video.',r:'What story does your documentation tell?',o:'Progress documentation'},
+    {t:'Integration',s:'Measure your impact',d:'Reflect on the cumulative impact of your community actions.',r:'How has contributing to community expanded your own journey?',o:'Impact reflection'}
+  ]},
+  {id:4,icon:'⚡',name:'Self Mastery',goal:'Expand awareness, discipline, and alignment',tasks:[
+    {t:'Belief Audit',s:'Face your shadows',d:'Identify 3 limiting beliefs or habits that are holding you back.',r:'Where did these beliefs originate, and are they still serving you?',o:'Belief audit list'},
+    {t:'Practice Selection',s:'Choose your discipline',d:'Pick a daily or weekly growth practice that calls to you.',r:'Why does this practice feel aligned with your evolution?',o:'Chosen practice and schedule'},
+    {t:'Reflection Journaling',s:'Mine your past',d:'Review past breakthroughs and patterns in your life.',r:'What recurring themes or gifts do you notice?',o:'Pattern journal'},
+    {t:'Milestone Setting',s:'Aim higher',d:'Set measurable 7 to 14 day personal growth goals.',r:'What version of yourself will achieve these milestones?',o:'Growth milestones'},
+    {t:'Visualization',s:'Embody your highest self',d:'Deeply imagine and describe yourself fully embodying your highest self.',r:'What does it feel like to already be this version of yourself?',o:'Highest self description'},
+    {t:'Resource Audit',s:'Know your tools',d:'Identify mentors, tools, courses, or materials that support your growth.',r:'Which resources are you underutilizing?',o:'Resource inventory'},
+    {t:'Track Wins',s:'Celebrate the journey',d:'Log small daily wins and breakthroughs from this week.',r:'How does celebrating wins shift your momentum?',o:'Wins log'},
+    {t:'Integration Reflection',s:'Embody the mastery',d:'Summarize your insights and alignment from this realm.',r:'How has this realm transformed your relationship with yourself?',o:'Mastery reflection'}
+  ]},
+  {id:5,icon:'💎',name:'Abundance',goal:'Align mindset, resources, and opportunities',tasks:[
+    {t:'Resource Inventory',s:'Count your riches',d:'List all your current resources including time, skills, network, money, and knowledge.',r:'What resources do you have that you have been undervaluing?',o:'Full resource inventory'},
+    {t:'Gap Analysis',s:'Bridge to abundance',d:'Identify missing resources and ways you could acquire or create them.',r:'What is the most important gap to close first?',o:'Gap analysis and acquisition plan'},
+    {t:'Micro-Manifestation',s:'Take tangible action',d:'Take one concrete step using your current resources toward abundance.',r:'What does taking this step feel like?',o:'Completed micro-action'},
+    {t:'Alignment Check',s:'Ensure your resources flow',d:'Map your current resources against your active creations.',r:'Where are your resources most and least aligned?',o:'Alignment map'},
+    {t:'Abundance Mindset',s:'Rewire your beliefs',d:'Journal on both limiting and expansive beliefs you hold about wealth and resources.',r:'What new belief about abundance could you choose to adopt today?',o:'Mindset journal'},
+    {t:'Opportunity Scan',s:'See what is possible',d:'Identify 3 to 5 new aligned opportunities in your current environment.',r:'What opportunities have you been overlooking?',o:'Opportunity list'},
+    {t:'Abundance Goal',s:'Set your sights',d:'Set a meaningful 7 to 14 day abundance goal that is tangible and measurable.',r:'What will achieving this goal prove to you?',o:'7 to 14 day abundance goal'},
+    {t:'Integration Reflection',s:'Anchor the abundance',d:'Summarize your resource and mindset alignment insights.',r:'How has your relationship with abundance shifted through this realm?',o:'Abundance integration'}
+  ]}
+];
+var SOUL=[
+  {msg:'Your purpose is not waiting somewhere in the future. It is already alive inside you, asking to be expressed.',aff:'"I am already everything I need to create the life I came here to live."'},
+  {msg:'Every relationship in your life is a mirror. This realm invites you to look honestly at what you have, tend what matters, and open yourself to the connections that will carry you further.',aff:'"I attract relationships that match the love I am becoming."'},
+  {msg:'You were not born to consume. You were born to create. This realm is your permission slip to start making something entirely, unapologetically yours.',aff:'"My creativity is a gift to the world and I give it freely."'},
+  {msg:'Your light is not meant to shine only on yourself. Find the places where your unique presence can ripple into something greater.',aff:'"My contribution matters. The world is better because I showed up."'},
+  {msg:'Everything you want to build in the outer world begins with who you are becoming in the inner one. This realm is the foundation. Do not rush it.',aff:'"I am disciplined, aligned, and becoming more of myself every day."'},
+  {msg:'Abundance is not something you chase. It is something you become available to. Clear the stories, see what you have, and open the channel for more to flow.',aff:'"I am worthy of abundance in all its forms. I receive it now."'}
+];
+var CEL=[
+  {i:'✦',t:'Beautiful.',m:'You just brought something real into the world.'},
+  {i:'🌟',t:'Yes.',m:'That is exactly what this quest is for.'},
+  {i:'💎',t:'Keep going.',m:'Every completed step builds your Heaven on Earth.'},
+  {i:'🔥',t:'Feel that.',m:'That is the energy of a soul in alignment.'},
+  {i:'✨',t:'Well done.',m:'Creation is an act of love. And you just did it.'}
+];
+var RD=['You have journeyed through Work and Purpose. Rest. Integrate. The next realm will be here when you are ready.','Relationships realm complete. Take time to be with the people you love before moving on.','Creativity realm complete. Something that did not exist before now exists because of you.','Community realm complete. Your ripple is moving outward right now, even if you cannot see it yet.','Self Mastery realm complete. You have faced yourself with courage. Sleep, meditate, move your body before continuing.','Abundance realm complete. Receive what is already on its way to you. Rest in that knowing.'];
+var BM=['Before you continue, take a breath. You are doing sacred work.','Rest here for a moment. Let what you just created settle in.','Your nervous system needs this pause. Breathe deeply before moving forward.','Creation takes energy. Honor yourself with a moment of stillness.','The work is not just in the doing. It is also in the being. Breathe.'];
+
+var U=null,RID=null,ST=0,OR=null,BT=null,MO=false;
+
+// Firebase init
+var fbApp = firebase.initializeApp({
+  apiKey: "AIzaSyB1mQZ4MmzZ6tapQFPsT-UOI1B6y-bb3jk",
+  authDomain: "heavenonearthquest-c2bfb.firebaseapp.com",
+  projectId: "heavenonearthquest-c2bfb",
+  storageBucket: "heavenonearthquest-c2bfb.firebasestorage.app",
+  messagingSenderId: "1072292904730",
+  appId: "1:1072292904730:web:659ff524bbd9815cdcf6a3"
+});
+var db = firebase.firestore();
+
+// Local cache for progress (still save locally for speed)
+function gU(){try{return JSON.parse(localStorage.getItem('eos_u')||'{}')}catch(e){return{}}}
+function gP(e){try{return JSON.parse(localStorage.getItem('eos_p_'+e)||'{}')}catch(e){return{}}}
+function sP(e,p){
+  localStorage.setItem('eos_p_'+e,JSON.stringify(p));
+  // Also sync to Firestore
+  try { db.collection('progress').doc(e).set(p); } catch(err) {}
+}
+function gS(){
+  if(!U) return [];
+  try{return JSON.parse(localStorage.getItem('eos_j_'+U.email)||'[]')}catch(e){return[]}
+}
+function sS(s){
+  if(!U) return;
+  localStorage.setItem('eos_j_'+U.email, JSON.stringify(s));
+  try { db.collection('journal').doc(U.email).set({items:s}); } catch(err) {}
+}
+function loadJournal(){
+  if(!U) return;
+  db.collection('journal').doc(U.email).get().then(function(doc){
+    if(doc.exists && doc.data().items){
+      localStorage.setItem('eos_j_'+U.email, JSON.stringify(doc.data().items));
+      renderShow();
+    }
+  }).catch(function(){});
+}
+
+var PAGES=['pg-landing','pg-pw','pg-ob','pg-dash','pg-realm','pg-show'];
+function goPg(id){
+  PAGES.forEach(function(p){
+    var el=document.getElementById(p);
+    if(el) el.style.display='none';
+  });
+  var el=document.getElementById(id);
+  if(el){el.style.display='block';window.scrollTo(0,0);}
+}
+
+function goPW(){
+  goPg('pg-pw');
+  document.getElementById('pw-step1').style.display='flex';
+  document.getElementById('pw-step2').style.display='none';
+  document.getElementById('pw-step3').style.display='none';
+}
+function showReg(){
+  document.getElementById('pw-step1').style.display='none';
+  document.getElementById('pw-step2').style.display='flex';
+  document.getElementById('pw-step3').style.display='none';
+}
+function showLogin(){
+  document.getElementById('pw-step1').style.display='none';
+  document.getElementById('pw-step2').style.display='none';
+  document.getElementById('pw-step3').style.display='flex';
+}
+function checkPW(){
+  var v=document.getElementById('pw-input').value.trim();
+  var e=document.getElementById('pw-err');
+  if(v===QP){e.style.display='none';showReg();}
+  else{e.style.display='block';setTimeout(function(){e.style.display='none';},3000);}
+}
+function doRegister(){
+  var n=document.getElementById('reg-name').value.trim();
+  var e=document.getElementById('reg-email').value.trim().toLowerCase();
+  var p=document.getElementById('reg-pw').value;
+  var err=document.getElementById('reg-err');
+  if(!n||!e||!p){err.textContent='Please fill in all fields.';err.style.display='block';return;}
+  err.textContent='Creating your account...';err.style.display='block';err.style.color='#c8973a';
+  db.collection('users').doc(e).get().then(function(doc){
+    if(doc.exists){err.textContent='Email already registered. Sign in instead.';err.style.color='#e05555';err.style.display='block';return;}
+    db.collection('users').doc(e).set({n:n,p:p,created:Date.now()}).then(function(){
+      U={email:e,name:n};
+      sessionStorage.setItem('eos_sess',JSON.stringify(U));
+      enterApp();
+    });
+  }).catch(function(){
+    // Fallback to localStorage if offline
+    var users=gU();
+    if(users[e]){err.textContent='Email already registered. Sign in instead.';err.style.color='#e05555';err.style.display='block';return;}
+    users[e]={n:n,p:p};localStorage.setItem('eos_u',JSON.stringify(users));
+    U={email:e,name:n};sessionStorage.setItem('eos_sess',JSON.stringify(U));enterApp();
+  });
+}
+function doLogin(){
+  var e=document.getElementById('login-email').value.trim().toLowerCase();
+  var p=document.getElementById('login-pw').value;
+  var err=document.getElementById('login-err');
+  err.textContent='Signing you in...';err.style.color='#c8973a';err.style.display='block';
+  db.collection('users').doc(e).get().then(function(doc){
+    if(doc.exists && doc.data().p===p){
+      U={email:e,name:doc.data().n};
+      sessionStorage.setItem('eos_sess',JSON.stringify(U));
+      // Also pull their progress from Firestore into localStorage
+      db.collection('progress').doc(e).get().then(function(pd){
+        if(pd.exists) localStorage.setItem('eos_p_'+e, JSON.stringify(pd.data()));
+        // Pull journal
+        db.collection('journal').doc(e).get().then(function(jd){
+          if(jd.exists && jd.data().items) localStorage.setItem('eos_j_'+e, JSON.stringify(jd.data().items));
+          enterApp();
+        }).catch(function(){ enterApp(); });
+      }).catch(function(){ enterApp(); });
+    } else {
+      err.textContent='Email or password not found.';err.style.color='#e05555';
+      setTimeout(function(){err.style.display='none';},3000);
+    }
+  }).catch(function(){
+    // Fallback to localStorage if offline
+    var users=gU();
+    if(users[e]&&users[e].p===p){
+      U={email:e,name:users[e].n};sessionStorage.setItem('eos_sess',JSON.stringify(U));enterApp();
+    }else{err.textContent='Email or password not found.';err.style.color='#e05555';setTimeout(function(){err.style.display='none';},3000);}
+  });
+}
+function doLogout(){
+  sessionStorage.removeItem('eos_sess');U=null;goPg('pg-landing');
+}
+function enterApp(){
+  var p=gP(U.email);
+  document.getElementById('dash-user').textContent=U.name;
+  buildGrid();updProg();
+  if(!p._done){
+    document.getElementById('ob-name').textContent='Welcome, '+U.name+'.';
+    document.getElementById('dash-greet').textContent='Welcome, '+U.name+' ✦';
+    goPg('pg-ob');obGo(1);
+  }else{
+    var msgs=['Welcome back, '+U.name+'. Your journey continues. ✦','You showed up again. That is the whole practice. ✦','Heaven on Earth is built one return at a time. ✦'];
+    document.getElementById('dash-greet').textContent=msgs[Math.floor(Math.random()*3)];
+    goPg('pg-dash');
+  }
+}
+function buildGrid(){
+  var g=document.getElementById('realms-grid');if(!g)return;
+  var p=gP(U.email),h='';
+  REALMS.forEach(function(r){
+    var rp=p[r.id]||{};
+    var done=r.tasks.filter(function(_,i){return rp[i]&&rp[i].done;}).length;
+    var pct=Math.round(done/r.tasks.length*100);
+    h+='<div class="realm-card" onclick="openRealm('+r.id+')">';
+    h+='<span class="rc-icon">'+r.icon+'</span>';
+    h+='<div class="rc-num">Realm 0'+(r.id+1)+'</div>';
+    h+='<div class="rc-title">'+r.name+'</div>';
+    h+='<div class="rc-goal">'+r.goal+'</div>';
+    h+='<div class="rc-progress"><div class="rc-track"><div class="rc-fill" style="width:'+pct+'%"></div></div><span class="rc-label">'+done+'/'+r.tasks.length+'</span></div>';
+    h+='</div>';
+  });
+  g.innerHTML=h;
+}
+function updProg(){
+  var p=gP(U.email),tot=0,done=0;
+  REALMS.forEach(function(r){
+    tot+=r.tasks.length;
+    var rp=p[r.id]||{};
+    done+=r.tasks.filter(function(_,i){return rp[i]&&rp[i].done;}).length;
+  });
+  var pct=Math.round(done/tot*100);
+  var b=document.getElementById('pct-bar'),l=document.getElementById('pct-lbl');
+  if(b)b.style.width=pct+'%';if(l)l.textContent=pct+'%';
+}
+function openRealm(id){
+  RID=id;var r=REALMS[id];
+  var p=gP(U.email),rp=p[id]||{};
+  var done=r.tasks.filter(function(_,i){return rp[i]&&rp[i].done;}).length;
+  document.getElementById('rh-title').textContent=r.icon+' '+r.name;
+  document.getElementById('rh-prog').textContent=done+' of '+r.tasks.length+' complete';
+  document.getElementById('ri-icon').textContent=r.icon;
+  document.getElementById('ri-title').textContent=r.name;
+  document.getElementById('ri-goal').textContent=r.goal;
+  var h='';
+  r.tasks.forEach(function(task,i){
+    var td=rp[i]||{};var isDone=td.done||false;
+    h+='<div class="task-card'+(isDone?' done':'')+'" id="tc'+i+'">';
+    h+='<div class="task-head" onclick="toggleTask('+i+')">';
+    h+='<div class="task-num">'+(i+1)+'</div>';
+    h+='<div class="task-info"><div class="task-title">'+task.t+'</div><div class="task-sub">'+task.s+'</div></div>';
+    h+='<div class="task-check">'+(isDone?'✦':'○')+'</div></div>';
+    h+='<div class="task-body" id="tb'+i+'">';
+    h+='<div class="task-section"><div class="task-section-label">Task</div><div class="task-section-text">'+task.d+'</div></div>';
+    h+='<div class="task-section"><div class="task-section-label">Reflection</div><div class="task-section-text">'+task.r+'</div>';
+    h+='<textarea class="task-textarea" id="tr'+i+'" placeholder="Write your reflection here...">'+(td.ref||'')+'</textarea></div>';
+    h+='<div class="task-section"><div class="task-section-label">Output: '+task.o+'</div>';
+    h+='<textarea class="task-textarea" id="to'+i+'" placeholder="Record your result here...">'+(td.out||'')+'</textarea></div>';
+    h+='<div class="task-actions"><button class="btn-save" onclick="saveTask('+i+')">Save</button>';
+    h+='<button class="btn-complete" id="cb'+i+'" onclick="completeTask('+i+')">'+(isDone?'✦ Completed':'Mark Complete')+'</button></div>';
+    h+='</div></div>';
+  });
+  document.getElementById('task-list').innerHTML=h;
+  // Load saved vision
+  var visionEl = document.getElementById('vision-input');
+  if(visionEl){
+    var visions = (gP(U.email)._visions) || {};
+    visionEl.value = visions[id] || '';
+  }
+  goPg('pg-realm');
+}
+function saveVision(){
+  var inp = document.getElementById('vision-input');
+  if(!inp) return;
+  var p = gP(U.email);
+  if(!p._visions) p._visions = {};
+  p._visions[RID] = inp.value;
+  sP(U.email, p);
+  showToast('✦ Vision saved');
+}
+
+function toggleTask(i){var b=document.getElementById('tb'+i);if(b)b.classList.toggle('open');}
+function saveTask(i){
+  var p=gP(U.email);
+  if(!p[RID])p[RID]={};if(!p[RID][i])p[RID][i]={};
+  var r=document.getElementById('tr'+i),o=document.getElementById('to'+i);
+  if(r)p[RID][i].ref=r.value;if(o)p[RID][i].out=o.value;
+  sP(U.email,p);showToast('✦ Progress saved');
+}
+function completeTask(i){
+  var p=gP(U.email);
+  if(!p[RID])p[RID]={};if(!p[RID][i])p[RID][i]={};
+  var was=p[RID][i].done||false,now=!was;
+  p[RID][i].done=now;
+  var r=document.getElementById('tr'+i),o=document.getElementById('to'+i);
+  if(r)p[RID][i].ref=r.value;if(o)p[RID][i].out=o.value;
+  sP(U.email,p);
+  var card=document.getElementById('tc'+i),chk=card?card.querySelector('.task-check'):null,btn=document.getElementById('cb'+i);
+  if(now){if(card)card.classList.add('done');if(chk)chk.textContent='✦';if(btn)btn.textContent='✦ Completed';}
+  else{if(card)card.classList.remove('done');if(chk)chk.textContent='○';if(btn)btn.textContent='Mark Complete';}
+  updProg();
+  if(now){
+    ST++;
+    var rp2=gP(U.email)[RID]||{};
+    var allDone=REALMS[RID].tasks.every(function(_,idx){return rp2[idx]&&rp2[idx].done;});
+    if(allDone){setTimeout(function(){showDone(RID);},400);}
+    else if(ST%3===0){showBreath();}
+    else{showCel();}
+  }
+}
+function obGo(n){
+  for(var i=1;i<=4;i++){var s=document.getElementById('ob'+i);if(s){s.classList.remove('active');s.style.display='none';}}
+  var next=document.getElementById('ob'+n);
+  if(next){next.style.display='flex';next.classList.add('active');window.scrollTo(0,0);}
+}
+function obPick(id){
+  OR=id;var r=REALMS[id],s=SOUL[id];
+  document.getElementById('ob-sel-icon').textContent=r.icon;
+  document.getElementById('ob-sel-name').textContent=r.name;
+  document.getElementById('ob-sel-msg').textContent=s.msg;
+  document.getElementById('ob-sel-aff').textContent=s.aff;
+  obGo(4);
+}
+function obEnter(){
+  var p=gP(U.email);p._done=true;
+  var v=document.getElementById('ob-intent');if(v&&v.value.trim())p._int=v.value.trim();
+  sP(U.email,p);buildGrid();openRealm(OR);
+}
+function showBreath(){
+  document.getElementById('breath-msg').textContent=BM[Math.floor(Math.random()*BM.length)];
+  document.getElementById('ov-breath').classList.add('show');
+  startBreath('bt2');
+}
+function showCel(){
+  var c=CEL[Math.floor(Math.random()*CEL.length)];
+  document.getElementById('cel-i').textContent=c.i;
+  document.getElementById('cel-t').textContent=c.t;
+  document.getElementById('cel-m').textContent=c.m;
+  document.getElementById('ov-cel').classList.add('show');
+}
+function showDone(id){
+  var r=REALMS[id];
+  document.getElementById('done-i').textContent=r.icon;
+  document.getElementById('done-t').textContent=r.name+' Complete.';
+  document.getElementById('done-m').textContent=RD[id];
+  document.getElementById('ov-done').classList.add('show');
+}
+function closeOv(id){document.getElementById(id).classList.remove('show');}
+var bPhases=['Breathe In','Hold','Breathe Out','Rest'],bDurs=[4000,2000,4000,2000],bIdx=0;
+function startBreath(elId){
+  if(BT)clearTimeout(BT);bIdx=0;
+  function cycle(){var el=document.getElementById(elId);if(el)el.textContent=bPhases[bIdx%4];BT=setTimeout(cycle,bDurs[bIdx%4]);bIdx++;}
+  cycle();
+}
+function goShowcase(){goPg('pg-show');renderShow();loadJournal();}
+function renderShow(){
+  var subs=gS(),el=document.getElementById('show-list');if(!el)return;
+  if(!subs.length){el.innerHTML='<div style="text-align:center;padding:40px;color:#c8973a;font-style:italic;opacity:.6;">Your journal is empty. Write your first entry. ✦</div>';return;}
+  var h='';
+  subs.slice().reverse().forEach(function(s){
+    var d=new Date(s.t).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    h+='<div class="sub-card">';
+    if(s.realm){h+='<div style="font-family:Raleway,sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#c8973a;opacity:.8;margin-bottom:10px;">'+s.realm+'</div>';}
+    h+='<div class="sub-header"><div class="sub-avatar">✦</div>';
+    h+='<div><div class="sub-date">'+d+'</div></div></div>';
+    h+='<div class="sub-text">'+s.txt+'</div></div>';
+  });
+  el.innerHTML=h;
+}
+function submitShow(){
+  var inp=document.getElementById('show-input');if(!inp||!inp.value.trim())return;
+  var realm=document.getElementById('show-realm');
+  var subs=gS();
+  subs.push({n:U.name,txt:inp.value.trim(),realm:realm?realm.value:'',t:Date.now()});
+  sS(subs);
+  inp.value='';if(realm)realm.value='';
+  renderShow();showToast('✦ Saved to your journal');
+}
+function makeStars(){
+  var c=document.getElementById('stars');if(!c)return;
+  var cols=['#e8c060','#f0d080','#c8973a','#fff8ee','#d4b870'];
+  for(var i=0;i<160;i++){
+    var s=document.createElement('div');s.className='star';
+    var sz=Math.random()*2.5+0.5;
+    s.style.cssText='left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+sz+'px;height:'+sz+'px;background:'+cols[Math.floor(Math.random()*5)]+';--d:'+(2+Math.random()*4)+'s;--dl:'+(Math.random()*5)+'s;--mn:'+(0.1+Math.random()*0.2)+';--mx:'+(0.4+Math.random()*0.5)+';';
+    c.appendChild(s);
+  }
+}
+function showToast(msg){
+  var t=document.getElementById('toast');if(!t)return;
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+function copyTxt(txt){if(navigator.clipboard)navigator.clipboard.writeText(txt).then(function(){showToast('Copied: '+txt);});}
+
+var YT_IDS=['QSbgIPyXh7s','3IPWFAU6yPM','PnjadHkzim8','5tKtG_zGP5E','Si-6T3HMdj4'];
+var YT_NAMES=['Be Still & Know','Stepping Off The Boat','New Earth','Affirmations','Sound Healing'];
+var ytp={},ytOk=false,mPlay=false,mCur=0;
+(function(){var s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);})();
+window.onYouTubeIframeAPIReady=function(){
+  ytOk=true;
+  for(var i=0;i<5;i++){(function(idx){
+    ytp[idx]=new YT.Player('yt'+idx,{height:'1',width:'1',videoId:YT_IDS[idx],
+      playerVars:{autoplay:0,loop:1,playlist:YT_IDS[idx],controls:0},
+      events:{onReady:function(e){e.target.setVolume(7);},onStateChange:function(e){if(e.data===0){e.target.seekTo(0);e.target.playVideo();}}}
+    });
+  })(i);}
+};
+function mToggle(){if(mPlay)mPause();else mPlayTrack(mCur);}
+function mPlayTrack(idx){
+  if(!ytOk)return;
+  for(var i=0;i<5;i++){try{if(i!==idx&&ytp[i])ytp[i].pauseVideo();}catch(e){}}
+  try{ytp[idx].setVolume(7);ytp[idx].playVideo();mPlay=true;mCur=idx;
+    document.getElementById('mplay').textContent='⏸';
+    document.getElementById('mwave').classList.remove('paused');
+    document.getElementById('mtitle').textContent=YT_NAMES[idx];
+  }catch(e){}
+}
+function mPause(){try{if(ytp[mCur])ytp[mCur].pauseVideo();}catch(e){}
+  mPlay=false;document.getElementById('mplay').textContent='▶';document.getElementById('mwave').classList.add('paused');}
+function mSel(idx){
+  mCur=idx;
+  for(var i=0;i<5;i++){var t=document.getElementById('mt'+i);if(t)t.classList.toggle('on',i===idx);}
+  document.getElementById('mtitle').textContent=YT_NAMES[idx];
+  mPlayTrack(idx);
+  setTimeout(function(){MO=true;mMenu();},300);
+}
+function mMenu(){MO=!MO;document.getElementById('mbar').classList.toggle('open',MO);}
+
+document.addEventListener('DOMContentLoaded',function(){
+  makeStars();
+  startBreath('bt1');
+  goPg('pg-landing');
+  try{
+    var sess=sessionStorage.getItem('eos_sess');
+    if(sess){var s=JSON.parse(sess);U=s;enterApp();return;}
+  }catch(e){}
+});
+</script>
+</body>
+</html>
